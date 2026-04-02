@@ -3,7 +3,12 @@ import {
   FileInput, 
   Image as ImageIcon, 
   Settings, 
-  RefreshCw 
+  RefreshCw,
+  Droplet,
+  Hash,
+  Trash2,
+  Maximize,
+  FileEdit
 } from 'lucide-react';
 
 export const tools = [
@@ -46,5 +51,45 @@ export const tools = [
     icon: Settings,
     color: "text-gray-700",
     acceptedTypes: ".pdf"
+  },
+  {
+    slug: "watermark-pdf",
+    title: "Watermark PDF",
+    description: "Stamp a custom text watermark across your PDF pages.",
+    icon: Droplet,
+    color: "text-blue-400",
+    acceptedTypes: ".pdf"
+  },
+  {
+    slug: "page-numbers-pdf",
+    title: "Add Page Numbers",
+    description: "Insert page numbers at the bottom of your PDF document.",
+    icon: Hash,
+    color: "text-indigo-600",
+    acceptedTypes: ".pdf"
+  },
+  {
+    slug: "remove-pages-pdf",
+    title: "Remove Pages",
+    description: "Delete specific pages from your PDF file.",
+    icon: Trash2,
+    color: "text-red-600",
+    acceptedTypes: ".pdf"
+  },
+  {
+    slug: "resize-pdf",
+    title: "Resize PDF (Dimensions)",
+    description: "Change the physical paper size (A4, Letter) of your PDF.",
+    icon: FileEdit,
+    color: "text-emerald-600",
+    acceptedTypes: ".pdf"
+  },
+  {
+    slug: "resize-image",
+    title: "Resize Image",
+    description: "Change the pixel width and height boundaries of an image.",
+    icon: Maximize,
+    color: "text-cyan-600",
+    acceptedTypes: "image/*"
   }
 ];
