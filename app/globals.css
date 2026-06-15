@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@utility animate-spin-slow {
+  animation: spin 8s linear infinite;
+}
+
+@layer base {
+  body {
+    @apply antialiased text-slate-800 bg-slate-50;
+  }
+}

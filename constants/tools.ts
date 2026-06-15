@@ -1,14 +1,15 @@
-import { 
-  Files, 
-  FileInput, 
-  Image as ImageIcon, 
-  Settings, 
+import {
+  Files,
+  FileInput,
+  Image as ImageIcon,
+  Settings,
   RefreshCw,
   Droplet,
   Hash,
   Trash2,
   Maximize,
-  FileEdit
+  FileEdit,
+  Unlock
 } from 'lucide-react';
 
 export const tools = [
@@ -18,6 +19,14 @@ export const tools = [
     description: "Convert JPG and PNG images to PDF securely in your browser.",
     icon: ImageIcon,
     color: "text-yellow-500",
+    acceptedTypes: "image/*"
+  },
+  {
+    slug: "resize-image",
+    title: "Resize Image",
+    description: "Change the pixel width and height boundaries of an image.",
+    icon: Maximize,
+    color: "text-cyan-600",
     acceptedTypes: "image/*"
   },
   {
@@ -37,19 +46,29 @@ export const tools = [
     acceptedTypes: ".pdf"
   },
   {
-    slug: "rotate-pdf",
-    title: "Rotate PDF",
-    description: "Rotate specific pages or the entire document permanently.",
-    icon: RefreshCw,
-    color: "text-purple-600",
+    slug: "resize-pdf",
+    title: "Resize PDF (Dimensions)",
+    description: "Change the physical paper size (A4, Letter) of your PDF.",
+    icon: FileEdit,
+    color: "text-emerald-600",
     acceptedTypes: ".pdf"
   },
+
   {
     slug: "protect-pdf",
     title: "Protect PDF",
     description: "Encrypt your PDF with a secure password.",
     icon: Settings,
     color: "text-gray-700",
+    acceptedTypes: ".pdf"
+  },
+
+  {
+    slug: "unprotect-pdf",
+    title: "Unlock PDF",
+    description: "Remove password protection and encryption from your PDF securely.",
+    icon: Unlock,
+    color: "text-emerald-500",
     acceptedTypes: ".pdf"
   },
   {
@@ -76,20 +95,14 @@ export const tools = [
     color: "text-red-600",
     acceptedTypes: ".pdf"
   },
+
+
   {
-    slug: "resize-pdf",
-    title: "Resize PDF (Dimensions)",
-    description: "Change the physical paper size (A4, Letter) of your PDF.",
-    icon: FileEdit,
-    color: "text-emerald-600",
+    slug: "rotate-pdf",
+    title: "Rotate PDF",
+    description: "Rotate specific pages or the entire document permanently.",
+    icon: RefreshCw,
+    color: "text-purple-600",
     acceptedTypes: ".pdf"
   },
-  {
-    slug: "resize-image",
-    title: "Resize Image",
-    description: "Change the pixel width and height boundaries of an image.",
-    icon: Maximize,
-    color: "text-cyan-600",
-    acceptedTypes: "image/*"
-  }
 ];

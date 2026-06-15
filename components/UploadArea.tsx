@@ -33,7 +33,7 @@ export function UploadArea({ toolSlug, accept, label, onFilesSelected }: UploadA
     >
       <input
         type="file"
-        multiple={toolSlug === "merge-pdf"}
+        multiple={toolSlug === "merge-pdf" || toolSlug === "image-to-pdf"}
         accept={accept}
         className="absolute inset-0 opacity-0 cursor-pointer"
         onChange={handleFileSelect}

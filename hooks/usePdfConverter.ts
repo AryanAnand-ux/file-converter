@@ -4,6 +4,7 @@ import { useState } from "react";
 import { jsPDF } from "jspdf";
 import { PDFDocument, degrees, rgb, StandardFonts, PageSizes } from "pdf-lib";
 import { encryptPDF } from "@pdfsmaller/pdf-encrypt-lite";
+import { decryptPDF } from "@pdfsmaller/pdf-decrypt";
 
 interface ConvertOptions {
   toolSlug: string;
@@ -22,6 +23,7 @@ interface ConvertOptions {
   imageFormat?: string;
   imageQuality?: string;
   imageBackground?: string;
+  pageOrder?: number[];
 }
 
 export function usePdfConverter() {
@@ -55,9 +57,10 @@ export function usePdfConverter() {
       } else {
         await convertPdf(options);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setError(err.message || "Operation failed. Please try again.");
+      const errMsg = err instanceof Error ? err.message : String(err);
+      setError(errMsg || "Operation failed. Please try again.");
     } finally {
       setIsConverting(false);
     }
@@ -198,6 +201,18 @@ export function usePdfConverter() {
       return;
     }
 
+    if (toolSlug === "unprotect-pdf") {
+      if (!password) throw new Error("Password is required to decrypt the PDF.");
+      const fileBuffer = await files[0].arrayBuffer();
+      try {
+        const decryptedBytes = await decryptPDF(new Uint8Array(fileBuffer), password);
+        handleBlobCreated(new Blob([new Uint8Array(decryptedBytes)], { type: "application/pdf" }));
+      } catch {
+        throw new Error("Incorrect password or invalid PDF file.");
+      }
+      return;
+    }
+
     if (toolSlug === "merge-pdf") {
       const mergedPdf = await PDFDocument.create();
       for (const file of files) {
@@ -206,7 +221,7 @@ export function usePdfConverter() {
           const pdf = await PDFDocument.load(fileBuffer);
           const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
           copiedPages.forEach((page) => mergedPdf.addPage(page));
-        } catch (e) {
+        } catch {
           throw new Error(`Failed to load file ${file.name}. It might be encrypted or invalid.`);
         }
       }
@@ -220,8 +235,19 @@ export function usePdfConverter() {
     let pdfDoc: PDFDocument;
     try {
       pdfDoc = await PDFDocument.load(fileBuffer);
-    } catch (e) {
+    } catch {
       throw new Error(`Failed to load PDF. It might be already encrypted or corrupted.`);
+    }
+
+    if (options.pageOrder && options.pageOrder.length > 0) {
+      try {
+        const reorderedPdf = await PDFDocument.create();
+        const copiedPages = await reorderedPdf.copyPages(pdfDoc, options.pageOrder);
+        copiedPages.forEach((page) => reorderedPdf.addPage(page));
+        pdfDoc = reorderedPdf;
+      } catch (e) {
+        console.error("Reordering failed:", e);
+      }
     }
 
     if (toolSlug === "split-pdf") {
